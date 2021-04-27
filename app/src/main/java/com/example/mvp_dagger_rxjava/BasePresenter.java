@@ -1,21 +1,26 @@
 package com.example.mvp_dagger_rxjava;
 
+import android.os.Bundle;
 import android.util.Log;
 
-import com.example.mvp_dagger_rxjava.model.RespositoryResponse;
+import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
-public class BasePresenter {
-    interface UIController{
+public class BasePresenter<T extends BasePresenter.BaseUIController, C extends BasePresenter.HolderData> {
+    private static final String KEY_HOLDER_DATA = "KEY_HOLDER_DATA";
+    interface HolderData extends Serializable {
+    }
+
+    interface BaseUIController {
         void onLoading();
         void onSuccess();
         void onError();
@@ -26,15 +31,25 @@ public class BasePresenter {
         void onError(Throwable throwable);
     }
 
-    CompositeDisposable compositeSubscription;
-    UIController uiController;
+    private CompositeDisposable compositeSubscription;
+    private T uiController;
 
-    public BasePresenter(UIController uiController) {
+    private C holderData;
+
+    public C getHolderData() {
+        return holderData;
+    }
+
+    public BasePresenter() {
         this.compositeSubscription = new CompositeDisposable();
+    }
+
+    public void registerUIController(T uiController){
         this.uiController = uiController;
     }
 
     public <T> void requestAPI(Observable<T> observable, ResponseObserver<T> observer) {
+
         this.uiController.onLoading();
         this.compositeSubscription.add(observable
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,5 +67,19 @@ public class BasePresenter {
     public void onDestroy(){
         this.compositeSubscription.clear();
         this.compositeSubscription.dispose();
+    }
+
+    public void onSave(Bundle outState){
+        outState.putSerializable(KEY_HOLDER_DATA, holderData);
+    }
+
+    public boolean onRestore(Bundle savedInstanceState){
+        if(savedInstanceState == null)
+            return false;
+        else{
+            C data = (C) savedInstanceState.getSerializable(KEY_HOLDER_DATA);
+            this.holderData = data;
+            return true;
+        }
     }
 }
