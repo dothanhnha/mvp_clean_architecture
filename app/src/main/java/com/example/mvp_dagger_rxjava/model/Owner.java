@@ -1,6 +1,8 @@
 package com.example.mvp_dagger_rxjava.model;
 
-public class Owner {
+import java.io.Serializable;
+
+public class Owner implements Serializable {
     private String avatar_url;
     private String events_url;
     private String followers_url;

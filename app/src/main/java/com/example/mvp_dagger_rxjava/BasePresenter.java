@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
-public class BasePresenter<T extends BasePresenter.BaseUIController, C extends BasePresenter.HolderData> {
+public abstract class BasePresenter<T extends BasePresenter.BaseUIController, C extends BasePresenter.HolderData> {
     private static final String KEY_HOLDER_DATA = "KEY_HOLDER_DATA";
     interface HolderData extends Serializable {
     }
@@ -24,6 +24,8 @@ public class BasePresenter<T extends BasePresenter.BaseUIController, C extends B
         void onLoading();
         void onSuccess();
         void onError();
+        void onIdle();
+        BasePresenter getPresenter();
     }
 
     interface ResponseObserver<T>{
@@ -32,19 +34,26 @@ public class BasePresenter<T extends BasePresenter.BaseUIController, C extends B
     }
 
     private CompositeDisposable compositeSubscription;
-    private T uiController;
+    protected T uiController;
 
     private C holderData;
+
+    private boolean isRestored = false;
+
+    public boolean isRestored() {
+        return isRestored;
+    }
 
     public C getHolderData() {
         return holderData;
     }
 
-    public BasePresenter() {
+    public BasePresenter(C holderData) {
+        this.holderData = holderData;
         this.compositeSubscription = new CompositeDisposable();
     }
 
-    public void registerUIController(T uiController){
+    public void register(T uiController){
         this.uiController = uiController;
     }
 
@@ -74,12 +83,18 @@ public class BasePresenter<T extends BasePresenter.BaseUIController, C extends B
     }
 
     public boolean onRestore(Bundle savedInstanceState){
-        if(savedInstanceState == null)
-            return false;
+        if(savedInstanceState == null){
+            isRestored = false;
+        }
         else{
             C data = (C) savedInstanceState.getSerializable(KEY_HOLDER_DATA);
-            this.holderData = data;
-            return true;
+            if(data != null){
+                this.holderData = data;
+                isRestored = true;
+            }
+            else
+                isRestored = false;
         }
+        return isRestored;
     }
 }

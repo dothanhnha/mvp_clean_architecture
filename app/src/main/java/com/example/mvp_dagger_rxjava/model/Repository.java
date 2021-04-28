@@ -2,7 +2,9 @@ package com.example.mvp_dagger_rxjava.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Repository {
+import java.io.Serializable;
+
+public class Repository implements Serializable {
     String archive_url;
     boolean archived;
     String assignees_url;

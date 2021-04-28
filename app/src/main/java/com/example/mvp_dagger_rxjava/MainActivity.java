@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.mvp_dagger_rxjava.model.RespositoryResponse;
 import com.example.mvp_dagger_rxjava.repos.SearchRepositoriesRepos;
@@ -19,7 +20,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 
-public class MainActivity extends AppCompatActivity implements MainPresenter.MainUIController {
+public class MainActivity extends BaseActivity<MainPresenter.MainDataHolder> implements MainPresenter.MainUIController {
 
     @Inject
     SearchRepositoriesRepos repos;
@@ -31,23 +32,23 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
 
     Button button;
 
+    TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         ((MyApplication)getApplicationContext())
                 .getAppComponent().mainComponent().create()
                 .inject(this);
-
-
+        setContentView(R.layout.activity_main);
         spinKitView = findViewById(R.id.spin_kit);
+        textView = findViewById(R.id.textView);
         button = findViewById(R.id.button);
         button.setOnClickListener(v -> {
             presenter.requestAPI(repos.getRepositories(SearchRepositoriesApi.SortType.STAR, "android", 5, 1),
                     new BasePresenter.ResponseObserver<RespositoryResponse>() {
                         @Override
                         public void onSuccess(RespositoryResponse result) {
-                            presenter.getHolderData().response = result;
+                            presenter.setResponse(result);
                         }
 
                         @Override
@@ -55,21 +56,22 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
                         }
                     });
         });
-
+        super.onCreate(savedInstanceState);
     }
 
     @Override
-    public void onLoading() {
-        spinKitView.setVisibility(View.VISIBLE);
+    protected void onRestore(MainPresenter.MainDataHolder dataHolder) {
+        onResponse(dataHolder.response);
     }
 
     @Override
-    public void onSuccess() {
-        spinKitView.setVisibility(View.INVISIBLE);
+    public BasePresenter getPresenter() {
+        return presenter;
     }
 
     @Override
-    public void onError() {
-        spinKitView.setVisibility(View.INVISIBLE);
+    public void onResponse(RespositoryResponse response) {
+        if(response != null)
+            textView.setText(String.valueOf(response.getTotal_count()));
     }
 }

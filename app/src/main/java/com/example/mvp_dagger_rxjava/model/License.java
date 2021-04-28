@@ -1,6 +1,8 @@
 package com.example.mvp_dagger_rxjava.model;
 
-public class License {
+import java.io.Serializable;
+
+public class License implements Serializable {
     private String key;
     private String name;
     private String node_id;
