@@ -46,9 +46,10 @@ public abstract class BaseActivity<C extends BasePresenter.HolderData> extends A
     }
 
     @Override
-    public void onError() {
+    public void onError(Throwable throwable) {
         hiddenLoadingDialog();
     }
+
 
     @Override
     public void onIdle() {

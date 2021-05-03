@@ -53,6 +53,7 @@ public class MainActivity extends BaseActivity<MainPresenter.MainDataHolder> imp
 
                         @Override
                         public void onError(Throwable throwable) {
+
                         }
                     });
         });
