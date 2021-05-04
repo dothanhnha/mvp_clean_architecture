@@ -7,6 +7,7 @@ import java.io.Serializable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 public abstract class BasePresenter<T extends BasePresenter.BaseUIController, C extends BasePresenter.HolderData> {
     private static final String KEY_HOLDER_DATA = "KEY_HOLDER_DATA";
@@ -51,19 +52,16 @@ public abstract class BasePresenter<T extends BasePresenter.BaseUIController, C 
     }
 
     public <T> void requestAPI(Observable<T> observable, ResponseObserver<T> observer) {
-
         this.uiController.onLoading();
         this.compositeSubscription.add(observable
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(error -> {
-                    BasePresenter.this.uiController.onError(error);
-                    observer.onError(error);
-                })
-                .doOnNext(response -> {
+                .subscribe((response) -> {
                     BasePresenter.this.uiController.onSuccess();
                     observer.onSuccess(response);
-                })
-                .subscribe());
+                }, (error) -> {
+                    BasePresenter.this.uiController.onError(error);
+                    observer.onError(error);
+                }));
     }
 
     public void onDestroy(){
