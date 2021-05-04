@@ -1,4 +1,4 @@
-package com.example.mvp_dagger_rxjava;
+package com.example.mvp_dagger_rxjava.api;
 
 import androidx.annotation.NonNull;
 import com.example.mvp_dagger_rxjava.model.RespositoryResponse;

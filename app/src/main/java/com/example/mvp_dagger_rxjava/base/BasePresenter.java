@@ -1,38 +1,19 @@
-package com.example.mvp_dagger_rxjava;
+package com.example.mvp_dagger_rxjava.base;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.mvp_dagger_rxjava.exception.ApiNetworkTimeoutException;
-import com.example.mvp_dagger_rxjava.exception.ApiNetworkUnavailableException;
-import com.example.mvp_dagger_rxjava.exception.ApiServerException;
-import com.example.mvp_dagger_rxjava.exception.ApiUnknownException;
-import com.example.mvp_dagger_rxjava.exception.ApiUnknownHostException;
-
-import java.io.IOException;
 import java.io.Serializable;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.util.concurrent.TimeoutException;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import retrofit2.HttpException;
 
 public abstract class BasePresenter<T extends BasePresenter.BaseUIController, C extends BasePresenter.HolderData> {
     private static final String KEY_HOLDER_DATA = "KEY_HOLDER_DATA";
-    interface HolderData extends Serializable {
+    public interface HolderData extends Serializable {
     }
 
-    interface BaseUIController {
+    public interface BaseUIController {
         void onLoading();
         void onSuccess();
         void onError(Throwable throwable);
@@ -40,7 +21,7 @@ public abstract class BasePresenter<T extends BasePresenter.BaseUIController, C 
         BasePresenter getPresenter();
     }
 
-    interface ResponseObserver<T>{
+    public interface ResponseObserver<T>{
         void onSuccess(T result);
         void onError(Throwable throwable);
     }

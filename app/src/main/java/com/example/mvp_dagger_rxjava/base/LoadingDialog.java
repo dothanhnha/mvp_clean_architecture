@@ -1,4 +1,4 @@
-package com.example.mvp_dagger_rxjava;
+package com.example.mvp_dagger_rxjava.base;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
 
 import androidx.annotation.NonNull;
+
+import com.example.mvp_dagger_rxjava.R;
 
 public class LoadingDialog extends Dialog {
 

@@ -1,6 +1,6 @@
 package com.example.mvp_dagger_rxjava.main.di;
 
-import com.example.mvp_dagger_rxjava.MainActivity;
+import com.example.mvp_dagger_rxjava.main.MainActivity;
 
 import dagger.Subcomponent;
 

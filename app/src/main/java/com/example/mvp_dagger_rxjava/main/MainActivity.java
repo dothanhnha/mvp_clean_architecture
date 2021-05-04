@@ -1,24 +1,19 @@
-package com.example.mvp_dagger_rxjava;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.mvp_dagger_rxjava.main;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.mvp_dagger_rxjava.MyApplication;
+import com.example.mvp_dagger_rxjava.R;
+import com.example.mvp_dagger_rxjava.api.SearchRepositoriesApi;
+import com.example.mvp_dagger_rxjava.base.BaseActivity;
+import com.example.mvp_dagger_rxjava.base.BasePresenter;
 import com.example.mvp_dagger_rxjava.model.RespositoryResponse;
 import com.example.mvp_dagger_rxjava.repos.SearchRepositoriesRepos;
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import javax.inject.Inject;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
 
 public class MainActivity extends BaseActivity<MainPresenter.MainDataHolder> implements MainPresenter.MainUIController {
 
@@ -33,7 +28,6 @@ public class MainActivity extends BaseActivity<MainPresenter.MainDataHolder> imp
     Button button;
 
     TextView textView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ((MyApplication)getApplicationContext())

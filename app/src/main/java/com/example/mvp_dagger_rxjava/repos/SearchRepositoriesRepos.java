@@ -1,13 +1,12 @@
 package com.example.mvp_dagger_rxjava.repos;
 
-import com.example.mvp_dagger_rxjava.BaseRepos;
-import com.example.mvp_dagger_rxjava.SearchRepositoriesApi;
+import com.example.mvp_dagger_rxjava.base.BaseRepos;
+import com.example.mvp_dagger_rxjava.api.SearchRepositoriesApi;
 import com.example.mvp_dagger_rxjava.model.RespositoryResponse;
 
 import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchRepositoriesRepos extends BaseRepos {
     private SearchRepositoriesApi searchRepositoriesApi;

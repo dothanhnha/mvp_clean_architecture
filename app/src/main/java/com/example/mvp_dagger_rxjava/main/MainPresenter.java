@@ -1,8 +1,7 @@
-package com.example.mvp_dagger_rxjava;
+package com.example.mvp_dagger_rxjava.main;
 
+import com.example.mvp_dagger_rxjava.base.BasePresenter;
 import com.example.mvp_dagger_rxjava.model.RespositoryResponse;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 

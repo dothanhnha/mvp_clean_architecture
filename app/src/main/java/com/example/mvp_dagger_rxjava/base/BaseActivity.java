@@ -1,8 +1,7 @@
-package com.example.mvp_dagger_rxjava;
+package com.example.mvp_dagger_rxjava.base;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

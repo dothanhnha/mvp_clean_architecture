@@ -1,4 +1,4 @@
-package com.example.mvp_dagger_rxjava;
+package com.example.mvp_dagger_rxjava.base;
 
 import com.example.mvp_dagger_rxjava.exception.ApiNetworkTimeoutException;
 import com.example.mvp_dagger_rxjava.exception.ApiNetworkUnavailableException;
